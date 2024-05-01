@@ -4,7 +4,7 @@
 
 #define BLANK 0
 #define CROSS 1
-#define ZERO 2
+#define ZERO -1
 
 #define CROSS_WON 10
 #define ZERO_WON 11
@@ -46,14 +46,14 @@ bool cmp_score(int cur_score, int& score, int alpha, int beta, bool is_zero)
     if (is_zero)
     {
         score = min(score, cur_score);
-        return min(beta, cur_score) <= alpha;
+        return (min(beta, cur_score) <= alpha);
     }
 
     score = max(score, cur_score);
-    return beta <= max(alpha, cur_score);
+    return (beta <= max(alpha, cur_score));
 }
 
-int minimax(vector<int>& board, int alpha, int beta, bool is_zero)
+int minimax(vector<int>& board, int alpha, int beta, bool is_zero) 
 {
     int gs = game_situation(board);
     if (gs == CROSS_WON) return 1000;
