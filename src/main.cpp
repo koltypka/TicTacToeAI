@@ -41,43 +41,46 @@ int game_situation(const vector<int>& board)
     return TIE;
 }
 
-int minimax(vector<int>& board, int alpha, int beta, bool is_zero) 
+bool cmp_score(int cur_score, int& score, int alpha, int beta, bool is_zero)
+{
+    if (is_zero)
+    {
+        score = min(score, cur_score);
+        return min(beta, cur_score) <= alpha;
+    }
+
+    score = max(score, cur_score);
+    return beta <= max(alpha, cur_score);
+}
+
+int minimax(vector<int>& board, int alpha, int beta, bool is_zero)
 {
     int gs = game_situation(board);
     if (gs == CROSS_WON) return 1000;
     if (gs == ZERO_WON) return -1000;
     if (gs == TIE) return 0;
 
+    int score = -1e9;
+    int tmp_value = CROSS;
+
     if (is_zero)
     {
-        int min_score = 1e9;
-        for (int i = 0; i < 9; i++)
-        {
-            if (board[i] != BLANK) continue;
-            vector<int> tmp = board;
-            tmp[i] = ZERO;
-            int cur_score = minimax(tmp, alpha, beta, false);
-            min_score = min(min_score, cur_score);
-            beta = min(beta, cur_score);
-            if (beta <= alpha) break;
-        }
-        return min_score;
+        score = 1e9;
+        tmp_value = ZERO;
     }
-    else
+
+    for (int i = 0; i < 9; i++)
     {
-        int max_score = -1e9;
-        for (int i = 0; i < 9; i++)
-        {
-            if (board[i] != BLANK) continue;
-            vector<int> tmp = board;
-            tmp[i] = CROSS;
-            int cur_score = minimax(tmp, alpha, beta, true);
-            max_score = max(max_score, cur_score);
-            alpha = max(alpha, cur_score);
-            if (beta <= alpha) break;
+        if (board[i] != BLANK) continue;
+        vector<int> tmp = board;
+        tmp[i] = tmp_value;
+        int cur_score = minimax(tmp, alpha, beta, !is_zero);
+        if (cmp_score(cur_score, score, alpha, beta, is_zero)) {
+            break;
         }
-        return max_score;
     }
+
+    return score;
 }
 
 int main()
