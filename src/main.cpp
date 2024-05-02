@@ -1,5 +1,6 @@
 ﻿#include <vector>
 #include <iostream>
+#include <numeric>
 #include <SFML/Graphics.hpp>
 
 #define BLANK 0
@@ -16,6 +17,34 @@ using namespace std;
 
 int game_situation(const vector<int>& board)
 {
+    /*int cortage = 0;
+    int column = 0;
+    int diagonal = 0;
+    int negative_diagonal = 0;
+    for (int i = 0; i < 8; i += 3)
+    {
+        cortage = board[i] + board[i + 1] + board[i + 2];
+        column = board[i] + board[i + 3] + board[i + 6];
+       
+        if (cortage == -3) return ZERO_WON;
+        if (cortage == 3) return CROSS_WON;
+
+        if (column == -3) return ZERO_WON;
+        if (column == 3) return CROSS_WON;
+    }
+    diagonal = board[0] + board[4] + board[8];
+    negative_diagonal = board[2] + board[4] + board[6];
+
+    if (diagonal == -3) return ZERO_WON;
+    if (diagonal == 3) return CROSS_WON;
+
+    if (negative_diagonal == -3) return ZERO_WON;
+    if (negative_diagonal == 3) return CROSS_WON;
+    for (auto i : board)
+    {
+        if (i == BLANK) return GAME_NOT_OVER;
+    }*/
+    
     if (board[0] == CROSS && board[1] == CROSS && board[2] == CROSS ||
         board[3] == CROSS && board[4] == CROSS && board[5] == CROSS ||
         board[6] == CROSS && board[7] == CROSS && board[8] == CROSS ||
@@ -34,6 +63,7 @@ int game_situation(const vector<int>& board)
         board[0] == ZERO && board[4] == ZERO && board[8] == ZERO ||
         board[2] == ZERO && board[4] == ZERO && board[6] == ZERO)
         return ZERO_WON;
+        
     for (auto i : board)
     {
         if (i == BLANK) return GAME_NOT_OVER;
